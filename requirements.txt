@@ -1,0 +1,38 @@
+# Core
+torch>=2.1.0
+torchvision
+numpy
+opencv-python
+pillow
+scipy
+scikit-learn
+matplotlib
+tqdm
+tabulate
+pyyaml
+
+# Training framework
+lightning>=2.2.0
+pytorch-lightning
+hydra-core>=1.3
+omegaconf
+rootutils
+lightning-utilities
+
+# Geometry / 3D utilities
+utils3d
+
+# Logging
+tensorboard
+
+# IO
+imageio
+einops
+huggingface_hub
+safetensors
+
+# Data augmentation
+albumentations
+
+# Click for CLI
+click

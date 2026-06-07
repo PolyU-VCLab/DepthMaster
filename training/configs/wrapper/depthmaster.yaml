@@ -1,0 +1,195 @@
+_target_: training.wrapper.DepthMasterWrapper
+mirror_pretrained: null
+# Optional: path to a pretrained DepthMaster checkpoint to warm-start from.
+# Set to `null` to train from scratch / from the DINOv2 backbone only.
+pretrained: null
+enable_gradient_checkpointing: false
+enable_ema: false
+ema_decay: 0.999
+gpu_e2c: true
+e2c_face_w: 518
+e2c_fov_deg: 95.0
+low_resolution_training_steps: 0
+vis_every: 1000
+vis_log_dir: null
+
+# DepthMaster backbone / head configuration.
+model:
+  img_size: 518
+  patch_size: 14
+  model_size: "large"
+  embed_dim: 1024
+  depth: 24
+  num_heads: 16
+  mlp_ratio: 4.0
+  num_register_tokens: 0
+  enable_cond: true
+  enable_pts: true
+  enable_norm: true
+  enable_scale: true
+  enable_conf: false
+  fixed_patch_embed: false
+  condition_strategy: ["token", "pow3r", "token"]
+  rope_base: 100.0
+  normalized_rope: false
+  rope_normalize_coords: null
+  rope_shift_coords: null
+  rope_jitter_coords: null
+  rope_rescale_coords: null
+  alt_start: 8
+  intermediate_idxs: [11, 15, 19, 23]
+  scale_head:
+    dims: [2048, 2048, 2048, 1]
+  num_tokens_range: [1200, 3600]
+
+# Optimizer configuration:
+#   * All parameters share an LR of 5e-6 (scale_head was loaded from a 100k
+#     checkpoint, so no higher LR is needed for it).
+optimizer:
+  type: AdamW
+  params:
+    - params:
+        include: ["*"]
+      lr: 5.0e-06
+
+# LR schedule: 1500-step warmup + CosineAnnealingLR (T_max=250000, eta_min=1e-8).
+# Notes:
+#   * T_max is aligned with max_steps=250000 so that cosine completes a full
+#     decay cycle over the whole finetuning run, smoothly annealing from peak
+#     down to eta_min=1e-8.
+#   * After the warmup the actual cosine phase runs for 248500 steps
+#     (250000 - 1500); rounding T_max up to 250000 has negligible effect on
+#     the final LR.
+lr_scheduler:
+  type: SequentialLR
+  params:
+    schedulers:
+      - type: LambdaLR
+        params:
+          lr_lambda:
+            - "max(0.0, min(1.0, epoch / 1500))"   # warmup for all parameter groups
+      - type: CosineAnnealingLR
+        params:
+      T_max: 250000
+          eta_min: 1.0e-08
+    milestones: [1500]
+
+# CCL loss configuration.
+ccl_loss:
+  enabled: true
+  weight: 0.2
+  fov_deg: 95.0
+  max_correspondences: 4096
+
+# Loss configuration.
+loss:
+  invalid: {}
+  A:
+    global:
+      function: affine_invariant_global_loss
+      weight: 1.0
+      params:
+        align_resolution: 48
+    patch_4:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 4
+        align_resolution: 24
+        num_patches: 16
+    patch_16:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 16
+        align_resolution: 12
+        num_patches: 256
+    patch_64:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 64
+        align_resolution: 6
+        num_patches: 4096
+    normal:
+      function: edge_loss
+      weight: 1.0
+    normal_map:
+      function: normal_map_loss
+      weight: 0.1
+    metric_scale:
+      function: metric_scale_loss
+      weight: 0.1
+    mask:
+      function: mask_bce_loss
+      weight: 0.1
+  B:
+    global:
+      function: affine_invariant_global_loss
+      weight: 1.0
+      params:
+        align_resolution: 48
+    patch_4:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 4
+        align_resolution: 24
+        num_patches: 16
+    patch_16:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 16
+        align_resolution: 12
+        num_patches: 256
+    metric_scale:
+      function: metric_scale_loss
+      weight: 0.1
+    normal:
+      function: edge_loss
+      weight: 1.0
+    normal_map:
+      function: normal_map_loss
+      weight: 0.1
+    mask:
+      function: mask_bce_loss
+      weight: 0.1
+  C:
+    global:
+      function: affine_invariant_global_loss
+      weight: 1.0
+      params:
+        align_resolution: 48
+    patch_4:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 4
+        align_resolution: 24
+        num_patches: 16
+    metric_scale:
+      function: metric_scale_loss
+      weight: 0.1
+    mask:
+      function: mask_bce_loss
+      weight: 0.1
+  D:
+    global:
+      function: affine_invariant_global_loss
+      weight: 1.0
+      params:
+        align_resolution: 24
+    patch_4:
+      function: affine_invariant_local_loss
+      weight: 1.0
+      params:
+        level: 4
+        align_resolution: 24
+        num_patches: 16
+    metric_scale:
+      function: metric_scale_loss
+      weight: 0.1
+    mask:
+      function: mask_bce_loss
+      weight: 0.1

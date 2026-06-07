@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DepthMaster: Unified Monocular Depth Estimation for Perspective and Panoramic Images.">
+  <meta name="keywords" content="DepthMaster, monocular depth, panorama, perspective, depth estimation, PolyU, VCLab">
+  <title>DepthMaster | PolyU VCLab</title>
+
+  <link rel="icon" href="./static/images/polyu-logo.png">
+
+  <!-- Bulma + interactive section legacy styles (kept for the 5 demo sections) -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/selection-panel.css">
+
+  <!-- New PolyU VCLab theme overlay -->
+  <link rel="stylesheet" href="./static/css/theme.css">
+
+  <!-- jQuery + Bulma JS for interactive sections -->
+  <script src="./static/js/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <!-- ============================================================
+        Floating Section Navigation
+       ============================================================ -->
+  <nav class="float-nav" aria-label="Section navigation">
+    <a href="#top" data-section="top">Top</a>
+    <a href="#abstract">Abstract</a>
+    <a href="#pano-gallery">Pano Gallery</a>
+    <a href="#pano-indoor">Pano Indoor</a>
+    <a href="#pano-outdoor">Pano Outdoor</a>
+    <a href="#persp-gallery">Persp Gallery</a>
+    <a href="#persp-comparison">Persp Compare</a>
+    <a href="#citation">Citation</a>
+  </nav>
+
+  <!-- ============================================================
+        Header — PolyU + VCLab logos
+       ============================================================ -->
+  <header class="site-header" id="top">
+    <div class="container-narrow header-inner">
+      <div class="logos">
+        <a href="https://www.polyu.edu.hk/" target="_blank" rel="noopener">
+          <img src="./static/images/polyu-logo.png" alt="PolyU">
+        </a>
+        <a href="https://polyu-vclab.github.io/" target="_blank" rel="noopener">
+          <img src="./static/images/vclab-logo.jpg" alt="VCLab">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+        Hero — title, authors, badges
+       ============================================================ -->
+  <section class="hero-section">
+    <div class="container-narrow">
+      <h1 class="hero-title">
+        <span class="hero-title-main">DepthMaster</span>
+        <span class="hero-title-sub">Unified Monocular Depth Estimation for Perspective and Panoramic Images</span>
+      </h1>
+      <p class="tagline">A single metric depth model for both narrow-FoV perspective images and 360° panoramas.</p>
+
+      <p class="authors">
+        <a href="https://scholar.google.com/citations?hl=en&user=zAAYwRYAAAAJ&view_op=list_works" target="_blank" rel="noopener">Pengfei Wang</a>,
+        <a href="https://scholar.google.com/citations?user=7TWugs4AAAAJ&hl=zh-CN" target="_blank" rel="noopener">Shihao Wang</a>,
+        <a href="https://scholar.google.com/citations?user=nMev-10AAAAJ&hl=en" target="_blank" rel="noopener">Liyi Chen</a>,
+        <a href="https://scholar.google.com/citations?user=F15mLDYAAAAJ&hl=en" target="_blank" rel="noopener">Zhiyuan Ma</a>,
+        <a href="https://scholar.google.com/citations?user=DxcLKZIAAAAJ&hl=en" target="_blank" rel="noopener">Guowen Zhang</a>,
+        <a href="https://scholar.google.com/citations?user=tAK5l1IAAAAJ&hl=en" target="_blank" rel="noopener">Lei Zhang</a><sup>&dagger;</sup>
+      </p>
+      <p class="affiliations">
+        The Hong Kong Polytechnic University
+      </p>
+      <p class="notes"><sup>&dagger;</sup> Corresponding author</p>
+
+      <div class="badges">
+        <a class="badge badge-disabled" href="#" rel="noopener">Paper (coming soon)</a>
+        <a class="badge badge-disabled" href="#" rel="noopener">arXiv (coming soon)</a>
+        <a class="badge" href="https://github.com/PolyU-VCLab/DepthMaster" target="_blank" rel="noopener">GitHub</a>
+        <a class="badge badge-disabled" href="#" rel="noopener">Models (coming soon)</a>
+      </div>
+    </div>
+  </section>
+
+  <img id="enlarged-image">
+
+  <!-- ============================================================
+        Abstract
+       ============================================================ -->
+  <section class="themed-section" id="abstract">
+    <div class="container-narrow">
+      <p class="section-label">Abstract</p>
+      <h2 class="section-title">Abstract</h2>
+      <div class="abstract-box">
+        <p>
+          While monocular depth estimation has achieved significant progress, achieving generalized metric depth estimation for both narrow field-of-view (FoV) perspectives and 360° panoramas remains an unsolved challenge.
+          Existing methods are often tailored to specific camera types and struggle to produce accurate metric depth that generalizes across diverse settings.
+          This limitation stems from two key challenges: the inherent geometric discrepancy between perspective and panoramic cameras, and the scarcity of panoramic training data with metric annotations.
+        </p>
+        <p>
+          In this work, we reformulate and introduce <strong>DepthMaster</strong>, a unified metric depth estimation framework for both perspective and panoramic images.
+          Instead of directly learning geometric distortions, we decompose any panoramic image into a set of overlapped perspective patches. This strategy simultaneously resolves geometric differences by unifying all inputs into a canonical perspective representation, and mitigates data scarcity by leveraging metric depth priors from vast perspective-image datasets.
+          Furthermore, a novel correspondence consistency loss is introduced to ensure metric and geometric consistency in overlapped regions.
+        </p>
+        <p>
+          Trained on a mixed dataset containing only one panorama dataset, DepthMaster achieves state-of-the-art zero-shot performance on 11 diverse datasets spanning both perspective and panoramic domains, demonstrating remarkable generalization. It outperforms <strong>not only universal methods but also leading specialist models</strong>. The code and models will be publicly available.
+        </p>
+      </div>
+
+      <figure class="pipeline-figure">
+        <img src="./static/images/pipeline.png" alt="DepthMaster pipeline">
+        <figcaption>Overview of the DepthMaster pipeline: panorama → overlapped perspective patches → unified metric depth.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================
+        Interactive Demo Sections
+        These sections preserve the original Bulma markup and IDs
+        so that the existing JS (pano_comparison.js, perspective_gallery.js,
+        demo_comparison.js) continues to work without modification.
+        We only wrap them in `.themed-wrap` to apply mild visual tweaks.
+       ============================================================ -->
+  <div class="themed-wrap">
+
+    <!-- ============================ Panorama Gallery ============================ -->
+    <section class="themed-section alt" id="pano-gallery">
+      <div class="container-narrow">
+        <p class="section-label">Demo · Panorama</p>
+        <h2 class="section-title">Panorama Gallery</h2>
+        <p class="section-lead">
+          A diverse gallery of panoramic 3D reconstructions produced by DepthMaster — indoor, outdoor, real-world and AI-generated 360° inputs.
+        </p>
+      </div>
+
+      <section class="hero">
+        <div class="hero-body" style="padding: 0;">
+          <div class="container is-max-desktop" id="pano_gallery_container">
+            <div id="toggleTexturedPanoGallery" class="toggle-container">
+              <button class="toggle-button toggle-left">Geometry only</button>
+              <button class="toggle-button toggle-right active">Textured</button>
+            </div>
+
+            <div class="model-container" id="model-pano-gallery-wrapper" style="justify-content: center;">
+              <div class="model-wrapper-comparison" style="width: 80%; max-width: 800px;">
+                <canvas id="panoGalleryCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="panoGalleryLoading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+            </div>
+            <div class="hero-body" style="padding: 0;">
+              <div class="selection-panel" id="panoGallerySelectionPanel" style="width: 90% !important; margin-left: 5%; flex-wrap: wrap;">
+              </div>
+              <div class="custom-carousel-container" id="panoGalleryPagination" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                <button id="panoGalleryPrevPage" class="custom-carousel-btn">Previous</button>
+                <span id="panoGalleryPageCounter" class="custom-video-counter">Page 1 / 1</span>
+                <button id="panoGalleryNextPage" class="custom-carousel-btn">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ Panorama Indoor Comparison ============================ -->
+    <section class="themed-section" id="pano-indoor">
+      <div class="container-narrow">
+        <p class="section-label">Demo · Panorama</p>
+        <h2 class="section-title">Panorama Indoor Comparison</h2>
+        <p class="section-lead">
+          Side-by-side comparisons against leading methods on indoor 360° scenes. DepthMaster recovers more accurate geometry with fewer artifacts thanks to its perspective-patch decomposition.
+        </p>
+      </div>
+
+      <section class="hero is-light">
+        <div class="hero-body" style="padding: 0;">
+          <div class="container is-max-desktop" id="pano_indoor_container">
+            <div id="toggleTexturedPanoIndoor" class="toggle-container">
+              <button class="toggle-button toggle-left">Geometry only</button>
+              <button class="toggle-button toggle-right active">Textured</button>
+            </div>
+
+            <div class="model-container" id="model-pano-indoor-wrapper">
+              <div class="model-wrapper-comparison">
+                <div class="dropdown model-label" style="pointer-events:none;text-align:center;">Ours</div>
+                <canvas id="panoIndoorCanvas1" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="panoIndoorLoading1" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+              <div class="model-wrapper-comparison">
+                <select id="panoIndoorMethod2Selection" class="dropdown model-label">
+                  <option value="da360" selected>Depth Anything 360</option>
+                  <option value="dap">DAP</option>
+                  <option value="unik3d">UniK3D</option>
+                  <option value="moge">MoGe</option>
+                </select>
+                <canvas id="panoIndoorCanvas2" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="panoIndoorLoading2" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+            </div>
+            <div class="hero-body" style="padding: 0;">
+              <div class="selection-panel" id="panoIndoorSelectionPanel" style="width: 90% !important; margin-left: 5%; flex-wrap: wrap;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ Panorama Outdoor Comparison ============================ -->
+    <section class="themed-section alt" id="pano-outdoor">
+      <div class="container-narrow">
+        <p class="section-label">Demo · Panorama</p>
+        <h2 class="section-title">Panorama Outdoor Comparison</h2>
+        <p class="section-lead">
+          DepthMaster maintains metrically consistent and geometrically faithful 3D reconstructions across diverse outdoor 360° settings with large depth ranges.
+        </p>
+        <p style="font-size: 0.85em; color: var(--c-muted); margin-top: -8px;">
+          <strong>Note:</strong> Since competing methods do not predict sky masks, their outdoor reconstructions contain a large number of outlier points (especially in sky regions). For a fairer visual comparison, we apply our predicted sky mask and additional depth-range thresholds to filter outliers from competing methods' point clouds.
+        </p>
+      </div>
+
+      <section class="hero">
+        <div class="hero-body" style="padding: 0;">
+          <div class="container is-max-desktop" id="pano_outdoor_container">
+            <div id="toggleTexturedPanoOutdoor" class="toggle-container">
+              <button class="toggle-button toggle-left">Geometry only</button>
+              <button class="toggle-button toggle-right active">Textured</button>
+            </div>
+
+            <div class="model-container" id="model-pano-outdoor-wrapper">
+              <div class="model-wrapper-comparison">
+                <div class="dropdown model-label" style="pointer-events:none;text-align:center;">Ours</div>
+                <canvas id="panoOutdoorCanvas1" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="panoOutdoorLoading1" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+              <div class="model-wrapper-comparison">
+                <div class="tips-wrapper">
+                  <div class="tips-icon">💡Tips</div>
+                  <div class="tips-text">
+                    <p>● Scroll to zoom in/out</p>
+                    <p>● Drag to rotate</p>
+                    <p>● Press "shift" and drag to pan</p>
+                  </div>
+                </div>
+                <select id="panoOutdoorMethod2Selection" class="dropdown model-label">
+                  <option value="da360" selected>Depth Anything 360</option>
+                  <option value="dap">DAP</option>
+                  <option value="unik3d">UniK3D</option>
+                  <option value="moge">MoGe</option>
+                </select>
+                <canvas id="panoOutdoorCanvas2" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="panoOutdoorLoading2" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+            </div>
+            <div class="hero-body" style="padding: 0;">
+              <div class="selection-panel" id="panoOutdoorSelectionPanel" style="width: 90% !important; margin-left: 5%; flex-wrap: wrap;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ Perspective Gallery ============================ -->
+    <section class="themed-section" id="persp-gallery">
+      <div class="container-narrow">
+        <p class="section-label">Demo · Perspective</p>
+        <h2 class="section-title">Perspective Gallery</h2>
+        <p class="section-lead">
+          Beyond panoramic inputs, DepthMaster also excels on standard perspective images — realistic photographs and stylized artwork alike — highlighting the strong generalization of our unified model.
+        </p>
+      </div>
+
+      <section class="hero is-light">
+        <div class="hero-body" style="padding: 0;">
+          <div class="container is-max-desktop" id="persp_gallery_container">
+            <div id="toggleTexturedPerspGallery" class="toggle-container">
+              <button class="toggle-button toggle-left">Geometry only</button>
+              <button class="toggle-button toggle-right active">Textured</button>
+            </div>
+
+            <div class="model-container" id="model-persp-gallery-wrapper" style="justify-content: center;">
+              <div class="model-wrapper-comparison" style="width: 80%; max-width: 800px;">
+                <canvas id="perspGalleryCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="perspGalleryLoading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+            </div>
+            <div class="hero-body" style="padding: 0;">
+              <div class="selection-panel" id="perspGallerySelectionPanel" style="width: 90% !important; margin-left: 5%; flex-wrap: wrap;">
+              </div>
+              <div class="custom-carousel-container" id="perspGalleryPagination" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                <button id="perspGalleryPrevPage" class="custom-carousel-btn">Previous</button>
+                <span id="perspGalleryPageCounter" class="custom-video-counter">Page 1 / 1</span>
+                <button id="perspGalleryNextPage" class="custom-carousel-btn">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ Perspective Comparison ============================ -->
+    <section class="themed-section alt" id="persp-comparison">
+      <div class="container-narrow">
+        <p class="section-label">Demo · Perspective</p>
+        <h2 class="section-title">Perspective Comparison</h2>
+        <p class="section-lead">
+          Side-by-side comparisons against state-of-the-art monocular depth estimation methods on perspective images. DepthMaster produces sharper geometric details and more accurate metric depth.
+        </p>
+      </div>
+
+      <section class="hero">
+        <div class="hero-body" style="padding: 0;">
+          <div class="container is-max-desktop" id="comparison_container">
+            <div id="toggleTexturedComparison" class="toggle-container">
+              <button class="toggle-button toggle-left">Geometry only</button>
+              <button class="toggle-button toggle-right active">Textured</button>
+            </div>
+
+            <div class="model-container" id="model-compare-wrapper">
+              <div class="model-wrapper-comparison">
+                <div class="dropdown model-label" style="pointer-events:none;text-align:center;">Ours</div>
+                <canvas id="perspComparisonCanvas1" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="perspComparisonLoading1" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+              <div class="model-wrapper-comparison">
+                <div class="tips-wrapper">
+                  <div class="tips-icon">💡Tips</div>
+                  <div class="tips-text">
+                    <p>● Scroll to zoom in/out</p>
+                    <p>● Drag to rotate</p>
+                    <p>● Press "shift" and drag to pan</p>
+                    <p>● Click on the buttons at the top to switch texture color on/off</p>
+                  </div>
+                </div>
+                <select id="comparisonMethod2Selection" class="dropdown model-label">
+                  <option value="unik3d" selected>UniK3D</option>
+                  <option value="da_v2">Depth Anything V2</option>
+                  <option value="depth_pro">Depth Pro</option>
+                  <option value="unidepth">UniDepth</option>
+                  <option value="moge">MoGe</option>
+                </select>
+                <canvas id="perspComparisonCanvas2" style="width: 100%; height: 100%; display: block;"></canvas>
+                <div id="perspComparisonLoading2" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;font-size:14px;color:#666;">Loading...</div>
+              </div>
+            </div>
+            <div class="hero-body" style="padding: 0;">
+              <div class="selection-panel" id="comparisonSelectionPanel" style="width: 90% !important; margin-left: 5%; flex-wrap: wrap;">
+              </div>
+              <div class="custom-carousel-container" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                <button id="prevPage" class="custom-carousel-btn">Previous</button>
+                <span id="pageCounter" class="custom-video-counter">Page 1 / 1</span>
+                <button id="nextPage" class="custom-carousel-btn">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+  </div><!-- /.themed-wrap -->
+
+  <!-- ============================================================
+        Citation
+       ============================================================ -->
+  <section class="themed-section" id="citation">
+    <div class="container-narrow">
+      <p class="section-label">BibTeX</p>
+      <h2 class="section-title">Citation</h2>
+      <p class="section-lead">If you find DepthMaster useful in your research, please consider citing:</p>
+      <div class="bibtex-wrap">
+        <button type="button" class="copy-btn" id="copy-bibtex">Copy</button>
+        <pre id="bibtex-content">@article{wang2026depthmaster,
+  title   = {DepthMaster: Unified Monocular Depth Estimation for Perspective and Panoramic Images},
+  author  = {Wang, Pengfei and Wang, Shihao and Chen, Liyi and Ma, Zhiyuan and Zhang, Guowen and Zhang, Lei},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+        Footer
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container-narrow">
+      <p>
+        &copy; 2026 <a href="https://polyu-vclab.github.io/" target="_blank" rel="noopener">PolyU VCLab</a>
+        · Project page template adapted from
+        <a href="https://wangrc.site/MoGe2Page/" target="_blank" rel="noopener">MoGe</a>
+        and <a href="https://polyu-vclab.github.io/GGT-100K/" target="_blank" rel="noopener">GGT-100K</a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+        JS — interactive sections
+       ============================================================ -->
+  <script src="static/js/config.js"></script>
+  <script src="static/js/selection-panel.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
+
+  <script src="static/js/pano_comparison.js"></script>
+  <script src="static/js/perspective_gallery.js"></script>
+  <script src="static/js/demo_comparison.js"></script>
+
+  <!-- New nav + bibtex helper -->
+  <script src="static/js/nav.js"></script>
+
+</body>
+
+</html>

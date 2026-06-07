@@ -1,0 +1,45 @@
+{
+    "env": {
+        "seed": 42,
+        "verbose": true
+    },
+    "evaluation": {
+        "alignment": ["dm_scale", "dm_affine"],
+        "datasets_dir": "data/eval_panorama",
+        "metric_names": [
+            "abs_relative_difference",
+            "squared_relative_difference",
+            "rmse_linear",
+            "rmse_log",
+            "log10",
+            "delta1_acc",
+            "delta2_acc",
+            "delta3_acc",
+            "i_rmse",
+            "silog_rmse"
+        ],
+        "metric_show": {
+            "dm_scale/abs_relative_difference": "Scale/AbsRel",
+            "dm_scale/delta1_acc": "Scale/δ_1",
+            "dm_affine/abs_relative_difference": "Affine/AbsRel",
+            "dm_affine/delta1_acc": "Affine/δ_1"
+        },
+        "datasets": {
+            "2d3ds": {
+                "dir": "2D3DS/wo_xyz",
+                "filenames": "eval/datasets/splits/2d3ds.txt",
+                "alignment_max_res": 2048
+            },
+            "matterport3d": {
+                "dir": "Matterport3D",
+                "filenames": "eval/datasets/splits/matterport3d.txt",
+                "alignment_max_res": 2048
+            },
+            "panosuncg": {
+                "dir": "PanoSUNCG/rotated",
+                "filenames": "eval/datasets/splits/panosuncg.txt",
+                "alignment_max_res": 1024
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Logs / outputs
+logs/
+output/
+checkpoints/
+tensorboard/
+csv/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+wandb/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local data
+data/

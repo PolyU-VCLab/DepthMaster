@@ -1,0 +1,57 @@
+# @package _global_
+
+# DepthMaster training schedule:
+#   - 250k optimization steps with cosine annealing on top of warmup
+#   - bf16 / DDP, gradient clipping enabled
+
+task_name: depthmaster
+tags: ["depthmaster", "train"]
+
+paths:
+  root_dir: ./output
+  log_dir: "${paths.root_dir}/depthmaster"
+  ckpt_dir: "${paths.log_dir}/checkpoints"
+  vis_log_dir: "${paths.log_dir}/vis_logs"
+
+# ==================== Wrapper override ====================
+wrapper:
+  vis_log_dir: "${paths.vis_log_dir}"
+
+# ==================== Trainer ====================
+trainer:
+max_steps: 250000
+  val_check_interval: 200000
+  deterministic: false
+  num_sanity_val_steps: 0
+  precision: 32
+  gradient_clip_val: 1.0
+  accumulate_grad_batches: 1
+  log_every_n_steps: 100
+  enable_checkpointing: true
+  enable_progress_bar: true
+  strategy:
+    _target_: lightning.pytorch.strategies.DDPStrategy
+    find_unused_parameters: true
+    timeout:
+      _target_: datetime.timedelta
+      minutes: 60000
+
+# ==================== Callbacks ====================
+callbacks:
+  - _target_: lightning.pytorch.callbacks.ModelCheckpoint
+    dirpath: "${paths.ckpt_dir}"
+    every_n_train_steps: 2500
+    save_last: true
+    save_top_k: -1
+  - _target_: lightning.pytorch.callbacks.LearningRateMonitor
+    logging_interval: "step"
+
+# ==================== Logger ====================
+logger:
+  - _target_: lightning.pytorch.loggers.TensorBoardLogger
+    save_dir: "${paths.log_dir}"
+    name: "tensorboard"
+
+# ==================== Misc ====================
+seed: 42
+ckpt_path: null

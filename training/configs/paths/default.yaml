@@ -1,0 +1,14 @@
+# Default paths for DepthMaster training.
+#
+# Override `root_dir` to control where logs/checkpoints/visualizations
+# are written, e.g.
+#   python training/launch.py paths.root_dir=/path/to/output
+#
+# Dataset paths used during training are configured in:
+#   - configs/train/depthmaster_train.json (referenced by training/configs/data/depthmaster.yaml)
+
+# logging directories
+root_dir: ./output                                 # output root directory
+log_dir: "${paths.root_dir}/logs/${task_name}"
+ckpt_dir: "${paths.log_dir}/checkpoints"
+vis_log_dir: "${paths.log_dir}/vis_logs"
