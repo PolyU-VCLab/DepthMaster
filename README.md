@@ -6,7 +6,7 @@
 
 
 [![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b.svg)](#)
-[![Project Page](https://img.shields.io/badge/Project-Page-8F1329.svg)](https://polyu-vclab.github.io/DepthMaster/)
+[![Project Page](https://img.shields.io/badge/Project-Page-8F1329.svg)](https://polyu-vclab.github.io/DepthMaster-page/)
 [![Checkpoints](https://img.shields.io/badge/Checkpoints-HuggingFace-FCC624.svg)](https://huggingface.co/VCLab-PolyU/DepthMaster)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -32,7 +32,7 @@
 <a id="news"></a>
 ## &#x1F4F0; News
 
-- **2026-06**: Released the [project page](https://polyu-vclab.github.io/DepthMaster/), the code repository, and the pretrained checkpoint on [Hugging Face](https://huggingface.co/VCLab-PolyU/DepthMaster).
+- **2026-06**: Released the [project page](https://polyu-vclab.github.io/DepthMaster-page/), the code repository, and the pretrained checkpoint on [Hugging Face](https://huggingface.co/VCLab-PolyU/DepthMaster).
 - **TBA**: Paper and Hugging Face demo.
 
 ---
