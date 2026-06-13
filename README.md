@@ -68,7 +68,7 @@ Key features:
 
 - ✅ **Single model, two modalities.** Perspective + equirectangular panorama.
 - ✅ **Metric depth output.** Recovers depth in meters as well as scale-/affine-invariant predictions.
-- 🏆 **State-of-the-art accuracy on both fronts.** Trained for **250k steps**, DepthMaster achieves top results on standard perspective benchmarks (NYUv2, KITTI, ETH3D, iBims-1, Sintel, DDAD, DIODE, Spring, HAMMER, GSO) *and* on panoramic benchmarks (Stanford2D3DS, Matterport3D, PanoSUNCG).
+- 🏆 **State-of-the-art accuracy on both fronts. DepthMaster achieves top results on standard perspective benchmarks (NYUv2, KITTI, ETH3D, iBims-1, Sintel, DDAD, DIODE, Spring, HAMMER, GSO) *and* on panoramic benchmarks (Stanford2D3DS, Matterport3D, PanoSUNCG).
 
 ---
 
