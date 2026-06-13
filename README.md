@@ -5,7 +5,7 @@
 <p align="center"><i>DepthMaster: Unified Monocular Depth Estimation for Perspective and Panoramic Images.</i></p>
 
 
-[![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b.svg)](#)
+[![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b.svg)](https://arxiv.org/abs/2606.12368)
 [![Project Page](https://img.shields.io/badge/Project-Page-8F1329.svg)](https://polyu-vclab.github.io/DepthMaster-page/)
 [![Checkpoints](https://img.shields.io/badge/Checkpoints-HuggingFace-FCC624.svg)](https://huggingface.co/VCLab-PolyU/DepthMaster)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -32,8 +32,8 @@
 <a id="news"></a>
 ## &#x1F4F0; News
 
-- **2026-06**: Released the [project page](https://polyu-vclab.github.io/DepthMaster-page/), the code repository, and the pretrained checkpoint on [Hugging Face](https://huggingface.co/VCLab-PolyU/DepthMaster).
-- **TBA**: Paper and Hugging Face demo.
+- **2026-06**: Released the [paper](https://arxiv.org/abs/2606.12368) on arXiv, the [project page](https://polyu-vclab.github.io/DepthMaster-page/), the code repository, and the pretrained checkpoint on [Hugging Face](https://huggingface.co/VCLab-PolyU/DepthMaster).
+- **TBA**: Hugging Face demo.
 
 ---
 
@@ -453,10 +453,13 @@ If you find DepthMaster useful for your research, please consider citing:
 
 ```bibtex
 @article{wang2026depthmaster,
-  title   = {DepthMaster: A Unified Perspective and Panoramic Monocular Depth Estimator},
-  author  = {Wang, Pengfei and Wang, Shihao and Chen, Liyi and Ma, Zhiyuan and Zhang, Guowen and Zhang, Lei},
-  journal = {arXiv preprint},
-  year    = {2026}
+  title         = {DepthMaster: A Unified Perspective and Panoramic Monocular Depth Estimator},
+  author        = {Wang, Pengfei and Wang, Shihao and Chen, Liyi and Ma, Zhiyuan and Zhang, Guowen and Zhang, Lei},
+  journal       = {arXiv preprint arXiv:2606.12368},
+  year          = {2026},
+  eprint        = {2606.12368},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV}
 }
 ```
 
